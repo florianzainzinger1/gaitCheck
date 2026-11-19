@@ -1,0 +1,69 @@
+# --- OS files ---
+.DS_Store
+._*
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# --- OneDrive / Office temp & lock files ---
+~$*
+*.tmp
+.~lock.*#
+
+# --- Editors & IDEs ---
+.vscode/
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+*.sublime-workspace
+
+# --- Claude Code local settings ---
+.claude/settings.local.json
+
+# --- Node / web tooling (for when the app gets a build step) ---
+node_modules/
+dist/
+build/
+.cache/
+.parcel-cache/
+.next/
+.expo/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# --- Python (for the gait-analysis / ML side) ---
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# --- Secrets & environment ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# --- Media & ML artifacts (keep big files out of git) ---
+# Raw trot videos and trained models belong in cloud storage, not the repo.
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.pt
+*.onnx
+*.h5
+*.ckpt
+
+# --- Archives (zip exports duplicate files already in the repo) ---
+*.zip
+
+# --- Internal team documents (the repo is public) ---
+Infos/
+Horse&Lameness Briefing.pdf
+*.docx
