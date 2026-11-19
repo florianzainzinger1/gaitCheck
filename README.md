@@ -34,6 +34,7 @@ The same data answers the rehab question: *is she back in her normal range and r
 
 | Path | Description |
 |------|-------------|
+| `index.html`, `site/` | **Website**: landing page with the live demo embedded in a phone frame (served at the GitHub Pages root) |
 | `app/` | **Interactive demo web app** (see below) |
 | `website/index.html` | Earlier clickable prototype as a single standalone HTML page |
 | `mockp/Gait Check – App Mockup.html` / `.pdf` | Full app mockup |
