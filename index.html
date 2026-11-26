@@ -139,6 +139,49 @@
     </div>
   </section>
 
+  <!-- TECH -->
+  <section class="sec paper" id="tech">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">Under the hood</span>
+        <h2>What the app sees</h2>
+        <p>Markerless pose estimation puts the same points on the horse in every frame. From how they rise and fall over each stride, the app works out how evenly the two halves of the stride match.</p>
+      </div>
+      <div class="tech reveal">
+        <div class="tech-video">
+          <video id="techVideo" muted loop playsinline preload="none" poster="site/video/tracking.jpg" width="848" height="384" aria-label="Trot clip with tracking points on the horse's head, body and legs">
+            <source src="site/video/tracking.mp4" type="video/mp4">
+          </video>
+          <div class="hud" aria-hidden="true"><i></i><span id="hudT">t 0.00 s</span><span id="hudF">frame 0000</span></div>
+          <button class="tech-toggle" id="techToggle" type="button" aria-label="Pause the clip">Pause</button>
+        </div>
+        <div class="readout" aria-hidden="true">
+          <div class="scope">
+            <canvas id="scope" height="120"></canvas>
+            <div class="scope-leg"><span><i class="k1"></i>head, vertical</span><span><i class="k2"></i>pelvis, vertical</span><span class="mm">mm</span></div>
+          </div>
+          <div class="phase">
+            <span>stride <b id="rStride">1</b></span>
+            <div class="phase-bar"><i id="rPhase"></i></div>
+            <span id="rStance">LF + RH</span>
+          </div>
+          <dl class="metrics">
+            <div><dt>Head MinDiff</dt><dd><b id="rHead">0.0</b> mm</dd></div>
+            <div><dt>Pelvis MinDiff</dt><dd><b id="rPelvis">0.0</b> mm</dd></div>
+            <div><dt>Symmetry, this stride</dt><dd><b id="rSI">0.0</b></dd></div>
+            <div><dt>Smoothed, α = 0.30</dt><dd><b id="rEMA">0.0</b></dd></div>
+            <div><dt>z vs. baseline</dt><dd><b id="rZ">0.00</b> σ</dd></div>
+            <div><dt>Status</dt><dd><b id="rStatus" class="ok">in range</b></dd></div>
+          </dl>
+          <pre class="formula">SI = 100 · (1 − |L − R| / (L + R))
+Sₙ = α · SIₙ + (1 − α) · Sₙ₋₁
+z  = (Sₙ − μ) / σ     μ = 96.0  σ = 1.1</pre>
+        </div>
+      </div>
+      <p class="small tech-note">The clip shows tracking points on a ridden trot. The numbers next to it are simulated to illustrate the calculation.</p>
+    </div>
+  </section>
+
   <!-- BASELINE -->
   <section class="sec" id="baseline">
     <div class="wrap split">

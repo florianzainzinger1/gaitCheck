@@ -67,3 +67,6 @@ venv/
 Infos/
 Horse&Lameness Briefing.pdf
 *.docx
+
+# The short tracking clip on the website is the one video that belongs in the repo.
+!site/video/*.mp4
