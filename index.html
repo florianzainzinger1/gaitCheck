@@ -152,27 +152,32 @@
           <video id="techVideo" muted loop playsinline preload="none" poster="site/video/tracking.jpg" width="848" height="384" aria-label="Trot clip with tracking points on the horse's head, body and legs">
             <source src="site/video/tracking.mp4" type="video/mp4">
           </video>
+          <div class="hud" aria-hidden="true"><i></i>stride <span id="hudStride">1</span></div>
           <button class="tech-toggle" id="techToggle" type="button" aria-label="Pause the clip">Pause</button>
         </div>
         <div class="readout" aria-hidden="true">
-          <div class="r-main">
-            <span class="r-label">Symmetry</span>
-            <b class="r-big" id="rSI">96.1</b>
-            <span class="r-status" id="rStatus">Within usual range</span>
+          <div class="curves">
+            <figure class="curve">
+              <figcaption><span>Head height over one stride</span><b>MinDiff <i id="rHead">2.9</i> mm</b></figcaption>
+              <svg id="cHead" viewBox="0 0 320 150"></svg>
+            </figure>
+            <figure class="curve">
+              <figcaption><span>Pelvis height over one stride</span><b>MinDiff <i id="rPelvis">2.5</i> mm</b></figcaption>
+              <svg id="cPelvis" viewBox="0 0 320 150"></svg>
+            </figure>
           </div>
-          <svg class="r-chart" id="rChart" viewBox="0 0 320 110" role="img">
-            <rect class="r-band" x="0" y="34" width="320" height="42" rx="8"/>
-            <polyline class="r-line" id="rLine" points=""/>
-            <g id="rPts"></g>
-          </svg>
-          <dl class="r-side">
-            <div><dt>Head, left vs. right</dt><dd><b id="rHead">–</b> mm</dd></div>
-            <div><dt>Pelvis, left vs. right</dt><dd><b id="rPelvis">–</b> mm</dd></div>
-            <div><dt>Strides measured</dt><dd><b id="rStride">0</b></dd></div>
+          <dl class="r-tiles">
+            <div><dt>Strides averaged</dt><dd><b id="rStride">1–4</b></dd></div>
+            <div><dt>Symmetry index SI</dt><dd><b id="rSI">95.8</b></dd></div>
+            <div><dt>Smoothed S, α = 0.30</dt><dd><b id="rS">95.8</b></dd></div>
+            <div><dt>Against usual range</dt><dd><b id="rStatus" class="ok">within</b></dd></div>
           </dl>
+          <pre class="formula">MinDiff = |min L − min R|
+SI = 100 · (1 − MinDiff / range)
+Sₙ = α · SIₙ + (1 − α) · Sₙ₋₁</pre>
         </div>
       </div>
-      <p class="small tech-note">Each point is the average of four strides. The band is the horse's usual range. The values here are simulated to illustrate the calculation.</p>
+      <p class="small tech-note">In a sound trot the two dips of each curve are equally deep. The gap between them, MinDiff, is a few millimetres and is what the app measures. Curves are the average of four strides. The values here are simulated to illustrate the calculation.</p>
     </div>
   </section>
 

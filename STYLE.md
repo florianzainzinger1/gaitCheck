@@ -102,10 +102,13 @@ Three rules decide most questions:
   scrolling.
 - **Timeline** `.timeline`: numbered circles, used for a real order of events.
 - **Chart card** `.chart-card`: ink line, sand band for the usual range, red for the change.
-- **Tracking readout** `.tech`: the trot clip with tracking points, shown whole, and a calm readout
-  below it: one large symmetry value, a small chart in the app's chart style, and three supporting
-  numbers. It updates once every four strides with a soft fade, never faster. No tickers, no
-  scrolling traces, no formulas. The values are simulated, and the note under the card must say so.
+- **Tracking readout** `.tech`: the trot clip with tracking points, shown whole. Below it, the two
+  curves the method rests on (vertical movement of head and pelvis over one stride, with the gap
+  between the two dips marked as MinDiff), four values derived from them, and the formulas. This is
+  the one place that uses the monospace stack `--mono`, for values, axis labels and formulas.
+  Curves and values update once every four strides with a soft fade, never faster. Nothing scrolls
+  or ticks apart from the stride counter on the clip. The values are simulated, and the note under
+  the card must say so.
 - **Q&A** `.faq`: native `<details>`, one open question does not close the others.
 
 ## Motion

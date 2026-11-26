@@ -6,6 +6,7 @@
   --green: #4F5E33; --green-d: #3F4A2A; --green-l: #E3E8D8; --olive: #9DAF7A; --red: #B83A2E; --dark: #161812;
   --serif: "Playfair Display", Georgia, serif;
   --sans: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Roboto Mono", monospace;
   --gutter: 20px; --sec: 72px;
   --r-s: 14px; --r-m: 22px; --r-l: 32px; --r-phone: 38px;
   --shadow: 0 24px 56px rgba(40, 40, 20, .16);
@@ -111,28 +112,36 @@ blockquote cite { display: block; font-family: var(--sans); font-size: 14px; fon
 .step-n { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: var(--green); margin-bottom: 10px; }
 .step-n b { width: 30px; height: 30px; border-radius: 15px; background: var(--green); color: #FFF; font-size: 15px; letter-spacing: 0; display: flex; align-items: center; justify-content: center; }
 
-/* under the hood: tracking clip with a calm readout that updates every four strides */
+/* under the hood: tracking clip, the stride curves it yields, and the numbers derived from them */
 .tech { background: var(--bg); border-radius: var(--r-l); overflow: hidden; box-shadow: 0 0 0 1px rgba(21, 21, 21, .08), var(--shadow); }
 .tech-video { position: relative; background: #1B1A17; aspect-ratio: 848 / 384; }
 .tech-video video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.hud { position: absolute; left: 10px; top: 10px; display: flex; align-items: center; gap: 7px; padding: 5px 10px; border-radius: 9px; background: rgba(20, 20, 20, .62); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); color: #FFF; font-family: var(--mono); font-size: 11px; font-variant-numeric: tabular-nums; }
+.hud i { width: 7px; height: 7px; border-radius: 4px; background: #E5484D; }
 .tech-toggle { position: absolute; right: 10px; bottom: 10px; min-height: 32px; padding: 4px 12px; border: 0; border-radius: 9px; background: rgba(20, 20, 20, .62); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); color: #FFF; font: 600 12px var(--sans); cursor: pointer; }
-.readout { display: grid; gap: 20px; padding: 22px 20px 24px; font-variant-numeric: tabular-nums; }
-.readout b { transition: opacity .35s ease; }
-.readout.tick b, .readout.tick .r-status { opacity: .25; }
-.r-main { display: grid; grid-template-columns: 1fr auto; align-items: baseline; gap: 2px 12px; }
-.r-label { font-size: 14px; font-weight: 600; color: var(--muted); }
-.r-big { grid-row: 2; font-family: var(--serif); font-size: 56px; line-height: 1; letter-spacing: -1px; }
-.r-status { grid-row: 2; grid-column: 2; align-self: end; padding-bottom: 8px; font-size: 13px; font-weight: 600; color: var(--green); transition: opacity .35s ease; }
-.r-chart { display: block; width: 100%; height: auto; overflow: visible; }
-.r-band { fill: var(--band); }
-.r-line { fill: none; stroke: var(--ink); stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
-.r-chart circle { fill: var(--paper); stroke: var(--ink); stroke-width: 2.5; }
-.r-chart circle.now { fill: var(--green); stroke: var(--green); }
-.r-side { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 16px; margin: 0; padding-top: 18px; border-top: 1px solid var(--line); }
-.r-side div:last-child { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: baseline; }
-.r-side dt { font-size: 13px; color: var(--muted); }
-.r-side dd { margin: 2px 0 0; font-size: 13px; color: var(--muted); }
-.r-side b { font-size: 22px; font-weight: 600; color: var(--ink); }
+.readout { display: grid; gap: 20px; padding: 20px 16px 22px; font-variant-numeric: tabular-nums; min-width: 0; }
+.readout .fade { transition: opacity .35s ease; }
+.readout.tick .fade { opacity: .2; }
+.curves { display: grid; gap: 18px; }
+.curve { margin: 0; min-width: 0; }
+.curve figcaption { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 6px; font-size: 13px; color: var(--muted); }
+.curve figcaption b { flex: none; font-family: var(--mono); font-size: 12px; font-weight: 400; color: var(--muted); white-space: nowrap; }
+.curve figcaption i { font-style: normal; font-size: 17px; font-weight: 600; color: var(--ink); }
+.curve svg { display: block; width: 100%; height: auto; overflow: visible; }
+.curve .ax { stroke: var(--line); stroke-width: 1; }
+.curve .lab { font-family: var(--mono); font-size: 9.5px; fill: var(--muted); }
+.curve .trace { fill: none; stroke: var(--ink); stroke-width: 2.25; stroke-linejoin: round; stroke-linecap: round; }
+.curve .lvl { stroke: var(--green); stroke-width: 1; stroke-dasharray: 3 3; }
+.curve .gap { stroke: var(--green); stroke-width: 1.5; }
+.curve .pt { fill: var(--paper); stroke: var(--ink); stroke-width: 2; }
+.curve .gaplab { font-family: var(--mono); font-size: 9.5px; fill: var(--green); font-weight: 600; }
+.r-tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; margin: 0; background: var(--line); border: 1px solid var(--line); border-radius: var(--r-s); overflow: hidden; }
+.r-tiles div { background: var(--paper); padding: 10px 12px; min-width: 0; }
+.r-tiles dt { font-size: 12px; color: var(--muted); }
+.r-tiles dd { margin: 2px 0 0; }
+.r-tiles b { font-family: var(--mono); font-size: 19px; font-weight: 600; color: var(--ink); }
+.r-tiles b.ok { color: var(--green); }
+.formula { margin: 0; font-family: var(--mono); font-size: 11px; line-height: 1.75; color: var(--muted); white-space: pre; overflow: hidden; }
 .tech-note { margin-top: 16px; }
 
 /* split */
@@ -237,14 +246,11 @@ blockquote cite { display: block; font-family: var(--sans); font-size: 14px; fon
   .step { display: block; }
   .step .shot { border-radius: var(--r-phone); margin-bottom: 22px; }
 
-  .readout { grid-template-columns: auto 1fr auto; align-items: center; gap: 48px; padding: 32px 36px; }
-  .r-main { grid-template-columns: auto; }
-  .r-big { font-size: 72px; }
-  .r-status { grid-row: 3; grid-column: 1; padding: 6px 0 0; }
-  .r-chart { max-height: 130px; }
-  .r-side { grid-template-columns: auto; gap: 14px; padding: 0 0 0 36px; border-top: 0; border-left: 1px solid var(--line); min-width: 220px; }
-  .r-side div, .r-side div:last-child { grid-column: auto; display: flex; justify-content: space-between; align-items: baseline; gap: 24px; }
-  .r-side dd { margin: 0; }
+  .readout { grid-template-columns: 1fr 1fr 300px; grid-template-areas: "curves curves tiles" "curves curves formula"; gap: 20px 36px; padding: 28px 32px 30px; align-items: start; }
+  .curves { grid-area: curves; grid-template-columns: 1fr 1fr; gap: 32px; }
+  .r-tiles { grid-area: tiles; }
+  .formula { grid-area: formula; font-size: 12px; }
+  .hud { left: 16px; top: 16px; font-size: 12px; }
   .tech-toggle { right: 16px; bottom: 16px; }
   .split { grid-template-columns: 1fr 1fr; gap: 72px; }
   .split.rev > :first-child { order: 2; }

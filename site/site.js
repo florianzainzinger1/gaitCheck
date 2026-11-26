@@ -28,42 +28,66 @@
     els.forEach(el => el.classList.add('in'));
   }
 
-  // Under the hood: the tracking clip plays while it is on screen. The readout next to it stays calm:
-  // it updates once every four strides and adds one point to the chart. The values are simulated from
-  // the clip time (no real measurement), so they are stable and loop cleanly.
+  // Under the hood: the tracking clip plays while it is on screen. Next to it, the two curves the method
+  // is built on: vertical movement of head and pelvis over one stride, averaged over four strides. Each
+  // curve has two dips (one per diagonal); the gap between them is MinDiff. Curves and numbers update
+  // once every four strides. All values are simulated from the clip time, so they loop cleanly.
   const video = document.getElementById('techVideo');
   const readout = document.querySelector('.readout');
   if (video && readout) {
     const $ = id => document.getElementById(id);
-    const STRIDE = 0.72, PER = 4, SLOTS = 8, LO = 94.5, HI = 97.5;
+    const STRIDE = 0.72, PER = 4, ALPHA = 0.30, LO = 94.5;
     const rnd = (n, k) => { const x = Math.sin(n * 127.1 + k * 311.7) * 43758.5453; return x - Math.floor(x); };
-    const avg = (w, f) => { let s = 0; for (let i = 0; i < PER; i++) s += f(w * PER + i); return s / PER; };
-    const headOf = w => avg(w, n => 1.0 + 3.2 * rnd(n, 1));           // mm, difference between the two halves of a stride
-    const pelvisOf = w => avg(w, n => 1.0 + 2.8 * rnd(n, 2));
-    const siOf = w => 100 - 1.6 * pelvisOf(w);                       // symmetry score of the window
-    const X = i => 16 + i * (288 / (SLOTS - 1));
-    const Y = v => 34 + (HI - v) / (HI - LO) * 42;                    // band spans y 34..76 in the chart
-    let shown = -2;
-    function render(done) {                                           // done = number of finished windows
-      if (done === shown) return;
-      const first = shown === -2; shown = done;
+    const avg = (w, k, base, span) => { let s = 0; for (let i = 0; i < PER; i++) s += base + span * rnd(w * PER + i, k); return s / PER; };
+    const PARTS = {
+      head: { svg: 'cHead', out: 'rHead', amp: 22, k: 1, diff: w => avg(w, 1, 1.0, 3.2), names: ['left fore', 'right fore'] },
+      pelvis: { svg: 'cPelvis', out: 'rPelvis', amp: 30, k: 2, diff: w => avg(w, 2, 1.0, 2.8), names: ['left hind', 'right hind'] }
+    };
+    const siOf = w => 100 * (1 - PARTS.pelvis.diff(w) / (2 * PARTS.pelvis.amp));
+    const minus = v => (v < 0 ? '−' : v > 0 ? '+' : '') + Math.abs(v);
+    // chart geometry (viewBox 320 x 150)
+    const X0 = 34, X1 = 312, Y0 = 10, Y1 = 118;
+    function curve(part, w) {
+      const A = part.amp, d = part.diff(w), a = d / 2 * (rnd(w, part.k + 5) < 0.5 ? -1 : 1), lim = A + 5;
+      const x = ph => X0 + ph * (X1 - X0), y = mm => Y0 + (lim - mm) / (2 * lim) * (Y1 - Y0);
+      const f = ph => A * Math.cos(4 * Math.PI * ph) - a * Math.sin(2 * Math.PI * ph);     // dips at 25 % and 75 % of the stride
+      let path = ''; for (let i = 0; i <= 80; i++) path += (i ? 'L' : 'M') + x(i / 80).toFixed(1) + ' ' + y(f(i / 80)).toFixed(1);
+      const yL = y(f(0.25)), yR = y(f(0.75)), xg = x(0.5);
+      const tick = mm => '<line class="ax" x1="' + X0 + '" x2="' + X1 + '" y1="' + y(mm).toFixed(1) + '" y2="' + y(mm).toFixed(1) + '"/><text class="lab" x="' + (X0 - 6) + '" y="' + (y(mm) + 3).toFixed(1) + '" text-anchor="end">' + minus(mm) + '</text>';
+      $(part.svg).innerHTML = tick(A) + tick(0) + tick(-A) +
+        '<line class="lvl" x1="' + x(0.25) + '" x2="' + x(0.75) + '" y1="' + yL.toFixed(1) + '" y2="' + yL.toFixed(1) + '"/>' +
+        '<line class="lvl" x1="' + x(0.25) + '" x2="' + x(0.75) + '" y1="' + yR.toFixed(1) + '" y2="' + yR.toFixed(1) + '"/>' +
+        '<path class="trace" d="' + path + '"/>' +
+        '<circle class="pt" cx="' + x(0.25) + '" cy="' + yL.toFixed(1) + '" r="4"/><circle class="pt" cx="' + x(0.75) + '" cy="' + yR.toFixed(1) + '" r="4"/>' +
+        '<line class="gap" x1="' + xg + '" x2="' + xg + '" y1="' + Math.min(yL, yR).toFixed(1) + '" y2="' + Math.max(yL, yR).toFixed(1) + '"/>' +
+        '<text class="gaplab" x="' + xg + '" y="' + (Math.min(yL, yR) - 7).toFixed(1) + '" text-anchor="middle">MinDiff</text>' +
+        '<text class="lab" x="' + x(0.25) + '" y="' + (Y1 + 22) + '" text-anchor="middle">' + part.names[0] + '</text>' +
+        '<text class="lab" x="' + x(0.75) + '" y="' + (Y1 + 22) + '" text-anchor="middle">' + part.names[1] + '</text>' +
+        '<text class="lab" x="' + (X0 - 6) + '" y="' + (Y1 + 22) + '" text-anchor="end">mm</text>';
+      $(part.out).textContent = d.toFixed(1);
+    }
+    readout.querySelectorAll('svg, figcaption i, .r-tiles b').forEach(el => el.classList.add('fade'));
+    let shown = -1;
+    function render(w) {                                              // w = index of the four-stride window
+      if (w === shown) return;
+      const first = shown < 0; shown = w;
       const paint = () => {
-        const w = done - 1;
-        $('rStride').textContent = done * PER;
-        $('rSI').textContent = done ? siOf(w).toFixed(1) : '–';
-        $('rHead').textContent = done ? headOf(w).toFixed(1) : '–';
-        $('rPelvis').textContent = done ? pelvisOf(w).toFixed(1) : '–';
-        $('rStatus').textContent = !done ? 'Reading the first strides' : (siOf(w) >= LO ? 'Within usual range' : 'Below usual range');
-        const pts = []; for (let i = 0; i < Math.min(done, SLOTS); i++) pts.push([X(i), Y(siOf(i))]);
-        $('rLine').setAttribute('points', pts.map(p => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' '));
-        $('rPts').innerHTML = pts.map((p, i) => '<circle cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="5"' + (i === pts.length - 1 ? ' class="now"' : '') + '/>').join('');
+        curve(PARTS.head, w); curve(PARTS.pelvis, w);
+        let s = siOf(0); for (let i = 1; i <= w; i++) s = ALPHA * siOf(i) + (1 - ALPHA) * s;
+        $('rStride').textContent = (w * PER + 1) + '–' + (w * PER + PER);
+        $('rSI').textContent = siOf(w).toFixed(1);
+        $('rS').textContent = s.toFixed(1);
+        $('rStatus').textContent = s >= LO ? 'within' : 'below';
         readout.classList.remove('tick');
       };
       if (first || calm) { paint(); return; }
       readout.classList.add('tick'); setTimeout(paint, 350);          // soft fade between updates
     }
-    // The first value is there from the start, so the card never shows an empty state.
-    const update = () => render(Math.min(SLOTS, Math.floor((video.currentTime || 0) / (STRIDE * PER)) + 1));
+    const update = () => {
+      const t = video.currentTime || 0;
+      $('hudStride').textContent = Math.floor(t / STRIDE) + 1;
+      render(Math.floor(t / (STRIDE * PER)));
+    };
     let userPaused = calm, visible = false;
     const toggle = $('techToggle');
     const label = () => { toggle.textContent = video.paused ? 'Play' : 'Pause'; toggle.setAttribute('aria-label', (video.paused ? 'Play' : 'Pause') + ' the clip'); };
