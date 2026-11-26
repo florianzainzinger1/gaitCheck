@@ -1,8 +1,8 @@
-# Gait Check
+# GaitCheck
 
 **Catch it early. Get back to training sooner.**
 
-Gait Check is an app for horse owners that uses AI to detect lameness early, before the human eye can see it. You film your horse trotting for 30 seconds once a week. The app learns that horse's own movement baseline and alerts you when something changes.
+GaitCheck is an app for horse owners that uses AI to detect lameness early, before the human eye can see it. You film your horse trotting for 30 seconds once a week. The app learns that horse's own movement baseline and alerts you when something changes.
 
 The project started in the startVienna Sprint and is currently at the prototype and pitch stage, working towards Demo Day.
 
@@ -37,8 +37,8 @@ The same data answers the rehab question: *is she back in her normal range and r
 | `index.html`, `site/` | **Website**: landing page with the live demo embedded in a phone frame (served at the GitHub Pages root) |
 | `app/` | **Interactive demo web app** (see below) |
 | `website/index.html` | Earlier clickable prototype as a single standalone HTML page |
-| `mockp/Gait Check – App Mockup.html` / `.pdf` | Full app mockup |
-| `mockp/Gait Check – App Mockup-png/` | Mockup screens: Today, Record, Analysing, Result, Change detected, Send to vet, History, Baseline learning, Ready to train, Stable view |
+| `mockp/GaitCheck – App Mockup.html` / `.pdf` | Full app mockup |
+| `mockp/GaitCheck – App Mockup-png/` | Mockup screens: Today, Record, Analysing, Result, Change detected, Send to vet, History, Baseline learning, Ready to train, Stable view |
 | `Infos/`, `Horse&Lameness Briefing.pdf` | Internal team documents: pitch slides, script, team overview and the Q&A briefing. Kept locally and not pushed (see `.gitignore`) |
 
 ## Demo web app (`app/`)
@@ -63,7 +63,7 @@ The demo app is a working version of the mockup. It keeps real state and remembe
 - **Next recording**: choose whether the next trot comes out *In range* or as a *Hind left change*, then record live on stage.
 - **Fast recording**: the 30 s recording runs in 5 s.
 - Keyboard: `←` `→` step through the flow, `C` switches the next result, `Shift+R` resets the demo data.
-- On a phone: tap "Gait Check" on the Today screen three times to open the same controls.
+- On a phone: tap "GaitCheck" on the Today screen three times to open the same controls.
 
 **Run it**
 
@@ -97,4 +97,4 @@ On GitHub Pages (or any static host) the app can be installed on a phone ("Add t
 
 ## Disclaimer
 
-Gait Check is a monitoring tool and does not replace a veterinary diagnosis. It flags changes in movement. Diagnosis and treatment stay with the vet.
+GaitCheck is a monitoring tool and does not replace a veterinary diagnosis. It flags changes in movement. Diagnosis and treatment stay with the vet.

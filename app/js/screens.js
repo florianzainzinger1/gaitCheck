@@ -1,4 +1,4 @@
-/* Gait Check – screens. Each screen returns HTML from current state; `mount` wires up anything live. */
+/* GaitCheck – screens. Each screen returns HTML from current state; `mount` wires up anything live. */
 (function () {
   'use strict';
   const { esc, I, avatar } = GC.ui;
@@ -75,7 +75,7 @@
       const greet = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
       return `<section class="scr today">
         ${heroFor(h, 'hero today-hero')}
-        <div class="brand"><div class="brand-t">Gait Check</div><div class="brand-s">${greet}, ${esc(GC.state.owner)}</div></div>
+        <div class="brand"><div class="brand-t">GaitCheck</div><div class="brand-s">${greet}, ${esc(GC.state.owner)}</div></div>
         <div class="sheet-card">
           <button class="row horse-switch" data-act="switch-horse">${avatar(h, 44)}<div class="grow"><div class="h-name">${esc(h.name)}</div><div class="sm ${subCls}">${esc(sub)}</div></div>${GC.state.horses.length > 1 ? `<span class="muted sm switch">Switch</span>` : ''}</button>
           ${cards}
@@ -380,7 +380,7 @@
       const c = el.querySelector('[data-act="copy"]');
       c.onclick = async () => { try { await navigator.clipboard.writeText(c.dataset.link); GC.ui.snack('Link copied'); } catch (e) { GC.ui.snack('Copy not available here'); } };
       const s = el.querySelector('[data-act="share"]');
-      if (s) s.onclick = () => navigator.share({ title: 'Gait Check report', url: s.dataset.link }).catch(() => { });
+      if (s) s.onclick = () => navigator.share({ title: 'GaitCheck report', url: s.dataset.link }).catch(() => { });
     }
   };
 
@@ -408,14 +408,14 @@
       return `<section class="scr report">
         <div class="browser"><button class="back" data-go="${r ? 'sent?r=' + r.id : 'today'}" aria-label="Back">${I.chevL()}</button><span class="url">🔒 gaitcheck.app/r/${r ? r.id : 'preview'}</span><button class="back" data-act="print" aria-label="Print">${I.print({ s: 20 })}</button></div>
         <div class="rp" id="printable">
-          <div class="rp-head"><div><div class="rp-brand">Gait Check · Movement report</div><h2>${esc(h.name)}</h2><div class="muted sm">Owner: ${esc(GC.state.owner)} · ${all.length} checks, ${ch.fmtDate(all[0].at)} – ${ch.fmtDate(all[all.length - 1].at)}</div></div>${avatar(h, 56)}</div>
+          <div class="rp-head"><div><div class="rp-brand">GaitCheck · Movement report</div><h2>${esc(h.name)}</h2><div class="muted sm">Owner: ${esc(GC.state.owner)} · ${all.length} checks, ${ch.fmtDate(all[0].at)} – ${ch.fmtDate(all[all.length - 1].at)}</div></div>${avatar(h, 56)}</div>
           ${fl ? `<div class="rp-flag"><b>${L[fl.leg]} flagged ${ch.fmtDate(fl.check.at).toLowerCase()}</b><span>${fl.ev.legs[fl.leg].value} vs. usual ${b[fl.leg].lo}–${b[fl.leg].hi} (${sd(fl.ev.legs[fl.leg].delta)} vs. mean)</span></div>` : `<div class="rp-ok"><b>All four legs within ${p.pos} usual range</b></div>`}
           ${r && r.note ? `<div class="rp-note"><span class="muted sm">Note from the owner</span><p>${esc(r.note)}</p></div>` : ''}
           ${inc.data && b ? `<h4>Symmetry per leg</h4><div class="rp-grid">${legCharts}</div>
           <h4>All checks</h4><table class="rp-tbl"><thead><tr><th>Date</th><th>FL</th><th>FR</th><th>HL</th><th>HR</th><th>All</th></tr></thead><tbody>${rows}</tbody></table>` : ''}
           ${inc.videos ? `<h4>Trot videos</h4><div class="rp-vids">${all.slice(-4).reverse().map(c => `<div class="rp-vid"><img src="assets/trot.jpg" alt=""><span>${ch.fmtDate(c.at)}</span></div>`).join('')}</div>` : ''}
           ${sessions ? `<h4>Training log</h4><ul class="rp-ul">${sessions}</ul>` : ''}
-          <p class="rp-disc">Symmetry scores are relative to this horse's own baseline (learned from ${p.pos} first ${GC.BASELINE_CHECKS} checks), measured from 30-second in-hand trot videos filmed by the owner. Gait Check flags changes. It does not diagnose.</p>
+          <p class="rp-disc">Symmetry scores are relative to this horse's own baseline (learned from ${p.pos} first ${GC.BASELINE_CHECKS} checks), measured from 30-second in-hand trot videos filmed by the owner. GaitCheck flags changes. It does not diagnose.</p>
         </div>
       </section>`;
     },
@@ -477,7 +477,7 @@
         <div class="sheet-card bl">
           <div class="green b sm">${ready ? 'All 4 checks done' : `Check ${n} of ${GC.BASELINE_CHECKS} done`}</div>
           <h2 class="t">${ready ? `${esc(h.name)}'s range is ready` : `Getting to know ${esc(h.name)}`}</h2>
-          <p class="muted m0">${ready ? `From now on, Gait Check compares every trot with ${p.pos} own normal and alerts you when a leg moves differently.` : `Every horse moves a little differently. Gait Check compares ${esc(h.name)} only with ${p.obj}self, so it first learns ${p.pos} normal range.`}</p>
+          <p class="muted m0">${ready ? `From now on, GaitCheck compares every trot with ${p.pos} own normal and alerts you when a leg moves differently.` : `Every horse moves a little differently. GaitCheck compares ${esc(h.name)} only with ${p.obj}self, so it first learns ${p.pos} normal range.`}</p>
           <div class="bars">${[0, 1, 2, 3].map(i => `<span class="bar ${i < n ? 'on' : ''}"></span>`).join('')}</div>
           <div class="card list">${rows}</div>
           ${ready ? '' : `<p class="muted sm m0">Until ${p.pos} range is ready you'll see each result, but no alerts.</p>`}
@@ -517,7 +517,7 @@
           <div class="loads">${[['walk', 'Walk only'], ['light', 'Light trot'], ['full', 'Full session']].map(([k, n]) => `<button class="load ${pickedLoad === k ? 'on' : ''}" data-load="${k}">${n}</button>`).join('')}</div>
           ${sess ? `<div class="card list">${sess}</div>` : ''}
           <button class="btn green mt-auto" id="logS">Log session</button>
-          <p class="muted sm center m0">Agree the training plan with your vet. Gait Check shows whether ${p.pos} movement stays in range.</p>
+          <p class="muted sm center m0">Agree the training plan with your vet. GaitCheck shows whether ${p.pos} movement stays in range.</p>
         </div>
       </section>`;
     },
@@ -582,7 +582,7 @@
     GC.ui.sheet(`<h3>Add a horse</h3>
       <label class="fld"><span>Name</span><input id="hName" placeholder="e.g. Fritzi" maxlength="24" autocomplete="off"></label>
       <div class="fld"><span>Pronoun</span><div class="seg two"><button class="on" data-pr="she">She</button><button data-pr="he">He</button></div></div>
-      <p class="muted sm m0">Gait Check first learns this horse's normal from 4 weekly checks.</p>
+      <p class="muted sm m0">GaitCheck first learns this horse's normal from 4 weekly checks.</p>
       <button class="btn green" id="hSave">Add and start learning</button>`, panel => {
       panel.querySelectorAll('[data-pr]').forEach(b => b.onclick = () => { pr = b.dataset.pr; panel.querySelectorAll('[data-pr]').forEach(x => x.classList.toggle('on', x === b)); });
       const save = () => {

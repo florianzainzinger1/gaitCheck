@@ -1,6 +1,6 @@
 {
-  "name": "Gait Check",
-  "short_name": "Gait Check",
+  "name": "GaitCheck",
+  "short_name": "GaitCheck",
   "description": "Catch lameness early from a 30-second trot video.",
   "start_url": "./index.html?app",
   "scope": "./",

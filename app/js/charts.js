@@ -1,4 +1,4 @@
-/* Gait Check – small SVG line chart with the horse's personal range as a band.
+/* GaitCheck – small SVG line chart with the horse's personal range as a band.
    Charts are interactive: drag or tap across a chart to read individual checks. */
 (function () {
   'use strict';

@@ -1,4 +1,4 @@
-/* Gait Check – router, phone stage, presenter panel and demo scenes. */
+/* GaitCheck – router, phone stage, presenter panel and demo scenes. */
 (function () {
   'use strict';
   const S = GC.screens;
@@ -91,7 +91,7 @@
     { key: 'report', n: "Vet's report", note: 'The vet opens a secure link in any browser – no app needed.', run() { useBlume(); if (!GC.evaluate(blume(), GC.lastCheck(blume())).flaggedLegs.length) GC.setTodayCheck(blume(), GC.analyse(blume(), 'change')); ensureReport(); GC.commit(); router.go('report?r=demo01'); } },
     { key: 'history', n: 'History', note: 'Hind left over ten weeks: flagged, rehab, back in her range.', run() { useBlume(); GC.setTodayCheck(blume(), GC.analyse(blume(), 'normal')); router.go('history?leg=HL'); } },
     { key: 'training', n: 'Back to training', note: 'The question we could never answer: is she ready to train again?', run() { useBlume(); GC.setTodayCheck(blume(), GC.analyse(blume(), 'normal')); router.go('training'); } },
-    { key: 'baseline', n: 'Learning the baseline', note: 'Every horse moves differently, so Gait Check compares each horse only with itself.', run() { GC.state.activeId = 'caruso'; GC.commit(); router.go('baseline'); } },
+    { key: 'baseline', n: 'Learning the baseline', note: 'Every horse moves differently, so GaitCheck compares each horse only with itself.', run() { GC.state.activeId = 'caruso'; GC.commit(); router.go('baseline'); } },
     { key: 'horses', n: 'Stable view', note: 'Stables and trainers look after many horses at once.', run() { useBlume(); GC.commit(); router.go('horses'); } }
   ];
   const SCREEN_TO_SCENE = { today: 'today', record: 'record', analysing: 'record', result: 'result', change: 'change', vet: 'vet', sent: 'vet', report: 'report', history: 'history', training: 'training', baseline: 'baseline', horses: 'horses' };

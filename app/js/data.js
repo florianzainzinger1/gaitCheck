@@ -1,4 +1,4 @@
-/* Gait Check – data model, demo seed, persistence and the (simulated) gait analysis engine.
+/* GaitCheck – data model, demo seed, persistence and the (simulated) gait analysis engine.
    Plain script (no modules) so the app also runs when opened straight from disk. */
 (function () {
   'use strict';

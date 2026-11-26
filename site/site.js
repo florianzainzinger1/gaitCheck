@@ -1,4 +1,4 @@
-/* Gait Check – website interactions: nav border, in-page links without history entries,
+/* GaitCheck – website interactions: nav border, in-page links without history entries,
    scroll reveal, the tracking clip with its readout, and the live demo in the desktop hero. */
 (function () {
   'use strict';

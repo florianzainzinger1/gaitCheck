@@ -1,6 +1,6 @@
-# Gait Check – Style Guide
+# GaitCheck – Style Guide
 
-This file describes how the Gait Check website looks, reads and behaves. The tokens live in
+This file describes how the GaitCheck website looks, reads and behaves. The tokens live in
 `site/site.css` under `:root`. If you change a value there, change it here too.
 
 ## What the site should feel like
@@ -125,11 +125,21 @@ Three rules decide most questions:
   the current entry, so "back" goes to the home screen and the next "back" leaves the app.
 - The demo embedded in the desktop hero never adds history entries.
 
+## Name
+
+- The product is called **GaitCheck**: one word, capital G and capital C, no space and no hyphen.
+- Never write "Gait Check", "Gaitcheck", "Gait-Check" or "GAIT CHECK". This holds everywhere:
+  website, app, page titles, meta tags, alt texts, the README, slides and social posts.
+- Lowercase `gaitcheck` is only for technical names: the domain gaitcheck.eu, file names,
+  storage keys and CSS or code identifiers.
+- Screenshots must show the current spelling. If the name appears in a screenshot, take a new one
+  instead of keeping the old picture.
+
 ## Voice
 
 - Plain English, short sentences, sentence case. Talk to the rider: "your horse", "your vet".
 - Say what the app does, then stop. No superlatives.
-- Never claim a diagnosis. Gait Check detects and documents changes. Vets decide.
+- Never claim a diagnosis. GaitCheck detects and documents changes. Vets decide.
 - Be honest about status: the product is in development and the demo's analysis is simulated.
 - Prices and planned features are marked as planned.
 
@@ -140,5 +150,6 @@ Three rules decide most questions:
 - [ ] No screenshot or photo is cropped
 - [ ] No number starts with a zero
 - [ ] No headline or short line ends with a full stop
+- [ ] The name is written GaitCheck everywhere, including screenshots
 - [ ] Back button leaves the page in one press, and the app in two at most
 - [ ] Keyboard focus is visible, reduced motion is respected

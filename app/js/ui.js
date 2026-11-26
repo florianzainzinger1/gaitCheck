@@ -1,4 +1,4 @@
-/* Gait Check – UI helpers: icons, escaping, toasts, bottom sheets. */
+/* GaitCheck – UI helpers: icons, escaping, toasts, bottom sheets. */
 (function () {
   'use strict';
 
@@ -37,7 +37,7 @@
   let toastTimer;
   function toast({ title, body, icon = 'history', tone = 'green', go }) {
     const el = document.getElementById('toast');
-    el.innerHTML = `<div class="toast-in"><span class="toast-ic ${tone}">${I[icon]({ stroke: '#FFF', s: 20 })}</span><span class="toast-tx"><span class="toast-app">Gait Check <em>now</em></span><b>${esc(title)}</b><span>${esc(body)}</span></span></div>`;
+    el.innerHTML = `<div class="toast-in"><span class="toast-ic ${tone}">${I[icon]({ stroke: '#FFF', s: 20 })}</span><span class="toast-tx"><span class="toast-app">GaitCheck <em>now</em></span><b>${esc(title)}</b><span>${esc(body)}</span></span></div>`;
     el.onclick = () => { hideToast(); if (go) GC.router.go(go); };
     el.classList.remove('show'); void el.offsetWidth; el.classList.add('show');
     clearTimeout(toastTimer);
