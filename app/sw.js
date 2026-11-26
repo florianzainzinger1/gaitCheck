@@ -1,5 +1,5 @@
 /* Gait Check – offline cache so the demo works without venue Wi-Fi. Bump VERSION after changes. */
-const VERSION = 'gc-v2';
+const VERSION = 'gc-v3';
 const SHELL = [
   './', 'index.html', 'manifest.webmanifest', 'css/app.css',
   'js/data.js', 'js/ui.js', 'js/charts.js', 'js/screens.js', 'js/app.js',

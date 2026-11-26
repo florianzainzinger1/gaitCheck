@@ -1,5 +1,5 @@
 /* Gait Check – website interactions: nav border, in-page links without history entries,
-   scroll reveal, step dots, and the live demo in the desktop hero. */
+   scroll reveal, and the live demo in the desktop hero. */
 (function () {
   'use strict';
   const nav = document.getElementById('nav');
@@ -26,26 +26,6 @@
     els.forEach(el => io.observe(el));
   } else {
     els.forEach(el => el.classList.add('in'));
-  }
-
-  // Dots under the swipe row of steps (phones only; hidden on desktop).
-  const steps = document.getElementById('steps');
-  const dots = document.querySelectorAll('#stepDots i');
-  if (steps && dots.length) {
-    let raf = 0;
-    const mark = () => {
-      raf = 0;
-      const cards = steps.children;
-      const mid = steps.scrollLeft + steps.clientWidth / 2;
-      let best = 0, dist = Infinity;
-      for (let i = 0; i < cards.length; i++) {
-        const d = Math.abs(cards[i].offsetLeft - steps.offsetLeft + cards[i].offsetWidth / 2 - mid);
-        if (d < dist) { dist = d; best = i; }
-      }
-      if (steps.scrollLeft + steps.clientWidth >= steps.scrollWidth - 4) best = cards.length - 1;
-      dots.forEach((d, i) => d.classList.toggle('on', i === best));
-    };
-    steps.addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(mark); }, { passive: true });
   }
 
   // The live demo only runs inside the desktop hero. On phones the hero shows a still that opens the demo full screen.

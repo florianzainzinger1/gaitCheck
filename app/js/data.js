@@ -7,7 +7,7 @@
   const LEG_NAMES = { FL: 'Front left', FR: 'Front right', HL: 'Hind left', HR: 'Hind right' };
   const BASELINE_CHECKS = 4;        // checks needed before a horse has a personal range
   const FLAG_TOLERANCE = 1;         // points below the range before we alert
-  const STORE_KEY = 'gaitcheck.demo.v1';
+  const STORE_KEY = 'gaitcheck.demo.v2';   // bump when the seed changes, so saved demos pick it up
   const DAY = 86400000;
 
   // ---------- small utils ----------
@@ -23,30 +23,43 @@
   function seedState() {
     const rnd = seeded(7);
     const jitter = (c, amp) => round(c + (rnd() - 0.5) * 2 * amp);
+    // A horse has better and worse days: one shared offset per check moves all four legs together,
+    // so the overall value visibly varies from week to week instead of averaging out flat.
+    const dayOf = amp => (rnd() - 0.5) * 2 * amp;
 
     // Blume: tendon injury hind left. Flagged 9 weeks ago, rehab, back in range for the last 4 checks.
+    // The three sound legs stay inside their ranges (FL 96-99, FR 95-99, HR 94-98) but move from check to check.
     const blumeHL = [88, 89, 90, 90, 91, 93, 94, 96, 95];
+    const blumeFL = [98, 97, 98, 97, 99, 97, 98, 96, 99];
+    const blumeFR = [97, 96, 98, 96, 97, 96, 98, 96, 98];
+    const blumeHR = [96, 96, 97, 96, 97, 94, 97, 95, 98];
     const blumeChecks = blumeHL.map((hl, i) => {
       const weeksAgo = blumeHL.length - i;          // last seeded check: 7 days ago -> check due today
       return {
         id: 'b' + i,
         at: daysAgo(weeksAgo * 7, 16, 30 + i),
-        legs: { FL: jitter(97.5, 1), FR: jitter(97, 1), HL: hl, HR: jitter(96, 1) },
+        legs: { FL: blumeFL[i], FR: blumeFR[i], HL: hl, HR: blumeHR[i] },
         video: true,
         sentToVet: i === 0,
         source: 'seed'
       };
     });
 
-    const lunaChecks = [5, 4, 3, 2, 1].map((w, i) => ({
-      id: 'l' + i, at: daysAgo(w * 7, 9, 10), video: true, source: 'seed',
-      legs: { FL: jitter(97, 1), FR: jitter(96.5, 1), HL: jitter(96, 1), HR: jitter(97, 1) }
-    }));
+    const lunaChecks = [5, 4, 3, 2, 1].map((w, i) => {
+      const d = dayOf(1.2);
+      return {
+        id: 'l' + i, at: daysAgo(w * 7, 9, 10), video: true, source: 'seed',
+        legs: { FL: jitter(97 + d, .6), FR: jitter(96.5 + d, .6), HL: jitter(96 + d, .6), HR: jitter(97 + d, .6) }
+      };
+    });
 
-    const carusoChecks = [3, 2, 1].map((w, i) => ({
-      id: 'c' + i, at: daysAgo(w * 7, 18, 5), video: true, source: 'seed',
-      legs: { FL: jitter(95, 1.5), FR: jitter(96, 1.5), HL: jitter(95.5, 1.5), HR: jitter(95, 1.5) }
-    }));
+    const carusoChecks = [3, 2, 1].map((w, i) => {
+      const d = dayOf(1.5);
+      return {
+        id: 'c' + i, at: daysAgo(w * 7, 18, 5), video: true, source: 'seed',
+        legs: { FL: jitter(95 + d, .8), FR: jitter(96 + d, .8), HL: jitter(95.5 + d, .8), HR: jitter(95 + d, .8) }
+      };
+    });
 
     return {
       version: 1,
@@ -190,10 +203,11 @@
     const b = baselineOf(h);
     const rnd = Math.random;
     const legs = {};
+    const day = (rnd() - 0.5) * 3;       // shared good-day / off-day offset, so the overall value varies
     LEGS.forEach(l => {
       const m = b ? b[l].mean : 96;
       const lo = b ? b[l].lo : 93, hi = b ? b[l].hi : 99;
-      legs[l] = clamp(round(m + (rnd() - 0.5) * 2), lo, hi);
+      legs[l] = clamp(round(m + day + (rnd() - 0.5) * 1.4), lo, hi);
     });
     if (mode === 'change' && b) legs.HL = round(b.HL.mean - 7);
     return legs;

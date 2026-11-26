@@ -53,6 +53,9 @@ Three rules decide most questions:
 - Playfair is for headlines, the quote and numerals. Everything else is Inter.
 - Headlines use `text-wrap: balance`. Body lines stay under about 70 characters.
 - Italic green is reserved for one word in the hero and the closing call to action.
+- **No full stop at the end of a headline or any other short line.** Write "Meet Blume", not
+  "Meet Blume.". This covers headlines, card titles, button labels and labels. If a headline
+  needs two sentences, join them with a comma or rewrite it as one. Body copy keeps its full stops.
 
 ## Numbering
 
@@ -83,8 +86,11 @@ Three rules decide most questions:
   aspect ratio on them, and never use them as a cropped card header.
 - **Photos** keep their natural ratio too. Blume's portrait is 3:4 at every width.
 - Every `<img>` has `width` and `height` attributes so the page does not jump while loading.
-- Screenshots that sit side by side on desktop become a swipe row on phones (`.steps`), with the
-  next card peeking in from the right.
+- Screenshots that sit side by side on desktop stack on phones. In the three steps (`.steps`) each
+  row shows the screenshot on the left and the text on the right.
+- **The page only scrolls up and down.** Nothing may be wider than the screen, and there are no
+  sideways swipe rows or carousels.
+- A section headline stands above its picture on phones, never below it.
 
 ## Components
 
@@ -126,5 +132,6 @@ Three rules decide most questions:
 - [ ] No horizontal scroll on the page at any width
 - [ ] No screenshot or photo is cropped
 - [ ] No number starts with a zero
+- [ ] No headline or short line ends with a full stop
 - [ ] Back button leaves the page in one press, and the app in two at most
 - [ ] Keyboard focus is visible, reduced motion is respected
