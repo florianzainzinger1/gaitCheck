@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Gait Check – Catch lameness early</title>
 <meta name="description" content="Film a 30-second trot once a week. Gait Check learns your horse's own movement and tells you when a leg starts moving differently – before you can see it.">
 <meta name="theme-color" content="#F3F0E8">
@@ -15,6 +15,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="site/site.css">
+<noscript><style>.reveal { opacity: 1; transform: none; }</style></noscript>
 </head>
 <body>
 
@@ -25,7 +26,7 @@
       <a href="#how">How it works</a>
       <a href="#baseline">Why it works</a>
       <a href="#vets">For vets</a>
-      <a href="#faq">FAQ</a>
+      <a href="#faq">Q&amp;A</a>
     </nav>
     <a class="btn sm" href="app/">Try the demo</a>
   </div>
@@ -45,60 +46,56 @@
         </div>
         <ul class="ticks">
           <li>Just your phone, no sensors</li>
-          <li>Per-leg symmetry, every check</li>
-          <li>Share the history with your vet in one tap</li>
+          <li>All four legs, every check</li>
+          <li>One tap sends the history to your vet</li>
         </ul>
       </div>
       <div class="hero-phone">
+        <a class="phone-still" href="app/" aria-label="Open the live demo">
+          <img src="site/img/today.jpg" width="520" height="1125" alt="Gait Check app: Blume's symmetry is 96, within her usual range">
+        </a>
         <div class="phone" id="heroPhone">
-          <iframe src="app/index.html?app" title="Gait Check live demo" id="demoFrame"></iframe>
-          <img class="phone-fallback" src="site/img/today.jpg" alt="Gait Check app: Blume's symmetry is 96, within her usual range">
+          <iframe data-src="app/index.html?app" title="Gait Check live demo" id="demoFrame"></iframe>
+          <img class="phone-fallback" src="site/img/today.jpg" width="520" height="1125" alt="" loading="lazy">
         </div>
-        <p class="phone-cap"><span class="live-dot"></span>This is the real demo – tap around.</p>
+        <p class="phone-cap">
+          <span class="for-phone">Tap the phone to open the live demo.</span>
+          <span class="for-wide"><span class="live-dot"></span>This is the real demo – click around.</span>
+        </p>
       </div>
-    </div>
-  </section>
-
-  <!-- STRIP -->
-  <section class="strip">
-    <div class="wrap strip-in">
-      <div><b>30 s</b><span>of trot, once a week</span></div>
-      <div><b>0</b><span>sensors or extra equipment</span></div>
-      <div><b>4</b><span>legs measured every check</span></div>
-      <div><b>1 tap</b><span>to send the history to your vet</span></div>
     </div>
   </section>
 
   <!-- PROBLEM -->
-  <section class="sec" id="problem">
+  <section class="sec paper" id="problem">
     <div class="wrap">
       <div class="sec-head reveal">
         <span class="eyebrow">The problem</span>
         <h2>A horse can't tell you it hurts.</h2>
-        <p>When your knee starts to ache, you notice and rest it before it gets bad. Horses are prey animals – they hide pain by instinct. Lameness often starts as a few millimetres of difference between steps. By the time it is visible, a short break has turned into months off.</p>
+        <p>Horses are prey animals and hide pain by instinct. Lameness often starts as a few millimetres of difference between steps. By the time you can see it, a short break has turned into months off.</p>
       </div>
-      <div class="cards3">
-        <article class="pcard reveal"><span class="num">01</span><h3>Noticed too late</h3><p>Mild lameness is missed even by experienced owners. If you see your horse every day, you get used to gradual changes.</p></article>
-        <article class="pcard reveal"><span class="num">02</span><h3>Back to work too soon</h3><p>During rehab, owners decide by gut feeling whether a horse "looks okay". Building up too early means a relapse – especially with tendons.</p></article>
-        <article class="pcard reveal"><span class="num">03</span><h3>The vet sees a snapshot</h3><p>A lameness exam is one trot-up on one day. The vet doesn't know what normal looks like for this particular horse.</p></article>
-      </div>
+      <ul class="points reveal">
+        <li><h3>Noticed too late</h3><p>If you see your horse every day, you get used to gradual changes.</p></li>
+        <li><h3>Back to work too soon</h3><p>In rehab, “she looks okay” is a gut feeling. Too early means a relapse.</p></li>
+        <li><h3>The vet sees a snapshot</h3><p>One trot-up on one day, without knowing what's normal for this horse.</p></li>
+      </ul>
     </div>
   </section>
 
   <!-- BLUME -->
-  <section class="sec story">
+  <section class="sec">
     <div class="wrap story-in">
-      <figure class="story-img reveal"><img src="app/assets/blume.jpg" alt="Blume, a bay mare, looking into the camera" loading="lazy"><figcaption>Blume</figcaption></figure>
+      <figure class="story-img reveal"><img src="app/assets/blume.jpg" width="643" height="857" alt="Blume, a bay mare, looking into the camera" loading="lazy"><figcaption>Blume</figcaption></figure>
       <div class="story-copy reveal">
         <span class="eyebrow">Why we built it</span>
         <h2>Meet Blume.</h2>
-        <p class="lead">Blume has a tendon injury in her left hind leg and has been lame for more than a year. Her story shows the whole problem.</p>
+        <p class="lead">A tendon injury in her left hind leg has kept her lame for more than a year.</p>
         <ol class="timeline">
-          <li><b>It started long before anyone saw it.</b> She kept training while the injury was already there. Caught earlier, she most likely wouldn't have been out for a year.</li>
-          <li><b>Two relapses.</b> Training restarted twice, and both times she was visibly lame again after two to three weeks.</li>
-          <li><b>Nobody knows if she's ready.</b> Not even the vet can tell by eye whether she moves completely symmetrically again.</li>
+          <li><b>It started before anyone saw it.</b> She kept training with the injury already there.</li>
+          <li><b>Two relapses.</b> Both times she was lame again two to three weeks after training restarted.</li>
+          <li><b>Nobody knows if she's ready.</b> Not even the vet can tell by eye.</li>
         </ol>
-        <blockquote>“I can't prevent horses from going lame. No one can. But with Gait Check, you can catch it earlier, act earlier and shorten the time off.”<cite>Aurelia, founder, rider for 13 years</cite></blockquote>
+        <blockquote>“I can't prevent horses from going lame. No one can. But you can catch it earlier, act earlier and shorten the time off.”<cite>Aurelia, founder, rider for 13 years</cite></blockquote>
       </div>
     </div>
   </section>
@@ -109,28 +106,29 @@
       <div class="sec-head center reveal">
         <span class="eyebrow">How it works</span>
         <h2>Film. Learn. Act.</h2>
-        <p>Three steps, once a week. Everything else happens in the app.</p>
+        <p>Three steps, once a week.</p>
       </div>
-      <div class="steps">
-        <article class="step reveal">
-          <div class="shot"><img src="site/img/record.jpg" alt="Recording screen with tracking points on a trotting horse" loading="lazy"></div>
-          <span class="step-n">01 · Film</span>
+      <div class="steps" id="steps">
+        <article class="step">
+          <div class="shot"><img src="site/img/record.jpg" width="520" height="1125" alt="Recording screen with tracking points on a trotting horse" loading="lazy"></div>
+          <span class="step-n"><b>1</b>Film</span>
           <h3>30 seconds of trot</h3>
-          <p>Trot your horse in hand, away from you and back, on straight firm ground. Just like the trot-up at the vet.</p>
+          <p>In hand, away from you and back, on straight firm ground. Like the trot-up at the vet.</p>
         </article>
-        <article class="step reveal">
-          <div class="shot"><img src="site/img/result.jpg" alt="Result screen with symmetry 96 and values for each leg" loading="lazy"></div>
-          <span class="step-n">02 · Learn</span>
+        <article class="step">
+          <div class="shot"><img src="site/img/result.jpg" width="520" height="1125" alt="Result screen with symmetry 96 and values for each leg" loading="lazy"></div>
+          <span class="step-n"><b>2</b>Learn</span>
           <h3>Your horse's own baseline</h3>
-          <p>The AI tracks hooves, joints and hips, compares left and right steps, and learns your horse's personal movement range for each leg.</p>
+          <p>The app tracks hooves, joints and hips and learns the normal range of each leg.</p>
         </article>
-        <article class="step reveal">
-          <div class="shot"><img src="site/img/change.jpg" alt="Alert: hind left looks different from Blume's usual pattern" loading="lazy"></div>
-          <span class="step-n">03 · Act</span>
+        <article class="step">
+          <div class="shot"><img src="site/img/change.jpg" width="520" height="1125" alt="Alert: hind left looks different from Blume's usual pattern" loading="lazy"></div>
+          <span class="step-n"><b>3</b>Act</span>
           <h3>An alert when something changes</h3>
-          <p>If a leg moves outside its usual range, you know right away. Film again the next day, or send the history to your vet.</p>
+          <p>Film again the next day, or send the history to your vet.</p>
         </article>
       </div>
+      <div class="dots" id="stepDots" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
     </div>
   </section>
 
@@ -140,9 +138,9 @@
       <div class="reveal">
         <span class="eyebrow">Why it works</span>
         <h2>No horse is perfectly symmetrical. That's the point.</h2>
-        <p>Every horse has a stiff side and a hollow side. Comparing horses with a textbook ideal would raise false alarms all the time. Gait Check compares each horse only with itself: the first four checks set its normal range, and every check after that is measured against it.</p>
-        <p>That makes small, gradual changes visible – the ones that build up over weeks and that the eye gets used to.</p>
-        <a class="textlink" href="app/#/baseline">See the baseline in the demo →</a>
+        <p>Every horse has a stiff side and a hollow side, so a textbook ideal would raise false alarms all the time. Gait Check compares each horse only with itself: four checks set its normal range, every later check is measured against it.</p>
+        <p>It is built for the earliest stage, the one vets grade 1 to 2 out of 5: hard to see, not always there, and still early enough for a short break.</p>
+        <a class="textlink" href="app/#/baseline">See the baseline in the demo</a>
       </div>
       <div class="chart-card reveal" aria-label="Example chart: hind left symmetry inside Blume's usual range, then dropping below it">
         <div class="cc-head"><b>Hind left</b><span class="red">−7 vs. her usual range</span></div>
@@ -160,87 +158,73 @@
     </div>
   </section>
 
-  <!-- GRADES -->
+  <!-- REHAB -->
   <section class="sec alt">
     <div class="wrap split rev">
       <div class="reveal">
-        <span class="eyebrow">Where it helps</span>
-        <h2>The lameness the eye misses.</h2>
-        <p>Vets grade lameness on a scale – the most widely used one runs from 0 to 5. Obvious lameness doesn't need an app. Gait Check is built for grades 1 and 2: the stage where it is hard to see, not always there, and still early enough for a short break instead of months off.</p>
-      </div>
-      <ol class="grades reveal" aria-label="Lameness grades 0 to 5">
-        <li><b>0</b><span>No lameness detectable</span></li>
-        <li class="hit"><b>1</b><span>Hard to see, not always present</span><em>Gait Check</em></li>
-        <li class="hit"><b>2</b><span>Only visible under certain conditions</span><em>Gait Check</em></li>
-        <li><b>3</b><span>Always visible at trot</span></li>
-        <li><b>4</b><span>Obvious even at walk</span></li>
-        <li><b>5</b><span>Barely puts weight on the leg</span></li>
-      </ol>
-    </div>
-  </section>
-
-  <!-- REHAB -->
-  <section class="sec">
-    <div class="wrap split">
-      <div class="shot tall reveal"><img src="site/img/training.jpg" alt="Back to training screen: back in her range, 4 checks in a row" loading="lazy"></div>
-      <div class="reveal">
         <span class="eyebrow">Rehab</span>
         <h2>Know when your horse is ready again.</h2>
-        <p>The hardest question after lameness isn't "what's wrong?" – it's "when can we train again?". Gait Check shows when your horse has been back in its own range for several checks in a row, on all four legs.</p>
+        <p>The hardest question after lameness is “when can we train again?”. Gait Check shows when your horse has been back in its own range for several checks in a row, on all four legs.</p>
         <ul class="ticks">
-          <li>Checks twice a week while your horse builds up</li>
-          <li>Log walk, light trot or full sessions alongside the data</li>
-          <li>See a slip in the data before it turns into a relapse</li>
+          <li>Two checks a week while your horse builds up</li>
+          <li>See a slip in the data before it becomes a relapse</li>
         </ul>
-        <p class="small">Agree the training plan with your vet. Gait Check shows whether the movement stays in range.</p>
+        <p class="small">Agree the training plan with your vet.</p>
       </div>
+      <div class="shot solo reveal"><img src="site/img/training.jpg" width="520" height="1125" alt="Back to training screen: back in her range, 4 checks in a row" loading="lazy"></div>
     </div>
   </section>
 
   <!-- VETS -->
   <section class="sec dark" id="vets">
-    <div class="wrap split rev">
+    <div class="wrap split">
       <div class="reveal">
         <span class="eyebrow light">For vets</span>
-        <h2>Weeks of objective data instead of “she seems a bit off”.</h2>
-        <p>Owners usually report from memory. With Gait Check they send a secure link: symmetry per leg for every check, the trot videos with tracking points, and their training notes. It opens in any browser – no app, no account.</p>
+        <h2>Weeks of data instead of “she seems a bit off”.</h2>
+        <p>Owners send a secure link: symmetry per leg for every check, the trot videos with tracking points, and their notes. It opens in any browser, with no app and no account.</p>
         <ul class="ticks light">
-          <li>Before and after comparisons for flexion tests and nerve blocks</li>
-          <li>Follow rehab between appointments, not just at them</li>
-          <li>Printable report for the patient file</li>
+          <li>Compare before and after flexion tests and nerve blocks</li>
+          <li>Follow rehab between appointments</li>
         </ul>
         <a class="btn light" href="app/#/report">Open a sample vet report</a>
       </div>
-      <div class="shot tall reveal"><img src="site/img/vet.jpg" alt="Send to your vet screen with 8 weeks of movement data and trot videos selected" loading="lazy"></div>
+      <div class="shot solo reveal"><img src="site/img/vet.jpg" width="520" height="1125" alt="Send to your vet screen with 8 weeks of movement data and trot videos selected" loading="lazy"></div>
     </div>
   </section>
 
-  <!-- WHO -->
-  <section class="sec">
-    <div class="wrap">
-      <div class="sec-head center reveal">
-        <span class="eyebrow">Who it's for</span>
-        <h2>Anyone responsible for a horse's health.</h2>
-      </div>
-      <div class="cards3">
-        <article class="wcard reveal"><img src="app/assets/rider.jpg" alt="" loading="lazy"><div><h3>Riders & owners</h3><p>Early warnings, and confidence instead of guesswork during rehab.</p></div></article>
-        <article class="wcard reveal"><img src="site/img/stable.jpg" alt="" loading="lazy" class="top"><div><h3>Stables & trainers</h3><p>Keep an eye on many horses at once and get the same alerts as the owner.</p></div></article>
-        <article class="wcard reveal"><img src="site/img/history.jpg" alt="" loading="lazy" class="top"><div><h3>Vets</h3><p>A movement history for every patient instead of a single snapshot.</p></div></article>
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ -->
-  <section class="sec alt" id="faq">
+  <!-- Q&A -->
+  <section class="sec" id="faq">
     <div class="wrap narrow">
-      <div class="sec-head center reveal"><span class="eyebrow">FAQ</span><h2>Questions riders ask us.</h2></div>
+      <div class="sec-head center reveal"><span class="eyebrow">Q&amp;A</span><h2>Fair questions, straight answers.</h2></div>
       <div class="faq reveal">
-        <details><summary>Is Gait Check a diagnosis?</summary><p>No. Gait Check flags when your horse moves differently from its own normal. It does not say why. Diagnosis and treatment stay with your vet – Gait Check gives them better data to work with.</p></details>
-        <details><summary>What do I need?</summary><p>Your phone and about 20 metres of straight, firm ground. Someone trots the horse in hand away from you and back while you film from hip height. No sensors, no extra equipment.</p></details>
-        <details><summary>Why trot, and not walk or canter?</summary><p>Trot is a two-beat gait where diagonal legs move together, so it has the most even rhythm. Asymmetries show up best there, which is why every lameness exam uses the trot.</p></details>
-        <details><summary>How long until I get alerts?</summary><p>Gait Check first learns your horse's normal range from four weekly checks. You see every result from the start; alerts begin once the range is ready. That's also why it's worth starting while your horse is sound.</p></details>
-        <details><summary>What if my horse is lame on both sides?</summary><p>A horse that hurts on both sides can look symmetrical again – just shorter-strided and stiffer. Because Gait Check compares every check with the horse's own history, it is designed to notice a change in overall movement too – not only differences between left and right.</p></details>
-        <details><summary>When can I use it?</summary><p>Gait Check is in development. You can try the full experience today in the <a href="app/">interactive demo</a>. In the demo the movement analysis is simulated.</p></details>
+        <details>
+          <summary>Can a phone really see what a trained eye misses?</summary>
+          <p>Yes, because it measures instead of looking. Gait Check uses markerless pose estimation: a neural network finds the same points on your horse in every video frame – head, withers, pelvis, hooves – with no stickers and no sensors. From how those points rise and fall over many trot strides, it calculates how evenly the left and right half of each stride match. Your eye judges one stride at a time, in real time. The app compares dozens, frame by frame. Peer-reviewed research has shown that markerless phone video can measure trot asymmetry close to multi-camera motion capture. Our own model is in development and has to prove itself against such systems before launch.</p>
+        </details>
+        <details>
+          <summary>My horse is black, the yard is muddy and my hands shake. Still fine?</summary>
+          <p>Mostly, and the app is designed to tell you when it isn't. Each stride is compared with the other half of the same stride and scaled to your horse's body, so distance, zoom or a different yard matter far less than you'd think. What does matter is the ground: firm and straight gives comparable results, deep mud changes how any horse moves. While you film, the app checks that all four hooves are in frame and the phone is steady. If a video isn't good enough, it asks you to film again instead of guessing.</p>
+        </details>
+        <details>
+          <summary>My horse is already lame. Am I too late?</summary>
+          <p>No, but it changes what you get. If you start with a lame horse, its baseline is its current movement, so Gait Check can't alert you to a problem that is already there. You still see the left–right symmetry of every leg from the first check, and a clearly uneven result is worth showing your vet. From then on you follow the trend: better, stable or slipping back. That is exactly the question in rehab.</p>
+        </details>
+        <details>
+          <summary>So is this a diagnosis?</summary>
+          <p>No, and it isn't meant to be. Gait Check detects and documents changes in how your horse moves. It doesn't say what causes them. That is a legal line and a sensible one: a diagnosis needs a vet's hands, eyes and experience. Owners record. Vets decide.</p>
+        </details>
+        <details>
+          <summary>What does it cost, and is it cheaper if I pay once?</summary>
+          <p>Planned pricing at launch: €19.99 a month, or €199.99 if you pay for the year in one go. That is about €40 less, roughly two months free. Stables and trainers with several horses pay €99 a month.</p>
+        </details>
+        <details>
+          <summary>The app flagged something. How do I reach a vet?</summary>
+          <p>Today, one tap sends your own vet a secure link with the full history: symmetry per leg, the trot videos and your notes. Planned for later: a video call with a vet or an equine specialist directly in the app, so you can talk a change through without waiting for the next visit.</p>
+        </details>
+        <details>
+          <summary>When can I use it for real?</summary>
+          <p>Gait Check is in development. The <a href="app/">interactive demo</a> shows the full experience today. In the demo, the movement analysis is simulated.</p>
+        </details>
       </div>
     </div>
   </section>
@@ -250,7 +234,7 @@
     <div class="wrap cta-in reveal">
       <h2>Catch it early.<br><em>Get back to training sooner.</em></h2>
       <a class="btn big" href="app/">Try the live demo</a>
-      <p class="small">Works best on your phone – add it to your home screen.</p>
+      <p class="small">Works best on your phone. Add it to your home screen.</p>
     </div>
   </section>
 </main>
@@ -261,7 +245,7 @@
       <a class="logo" href="#top"><img src="app/assets/icon.svg" alt="" width="26" height="26"><span>Gait Check</span></a>
       <p class="small">Built by Aurelia, Tizian, Maya and Florian in the startVienna Sprint.</p>
     </div>
-    <div class="foot-links"><a href="#how">How it works</a><a href="#vets">For vets</a><a href="#faq">FAQ</a><a href="app/">Demo</a><a href="https://github.com/florianzainzinger1/gaitCheck">GitHub</a></div>
+    <div class="foot-links"><a href="#how">How it works</a><a href="#vets">For vets</a><a href="#faq">Q&amp;A</a><a href="app/">Demo</a><a href="https://github.com/florianzainzinger1/gaitCheck">GitHub</a></div>
     <p class="small disc">Gait Check is a monitoring tool and does not replace a veterinary examination. © 2026 Gait Check.</p>
   </div>
 </footer>

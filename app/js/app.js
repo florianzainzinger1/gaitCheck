@@ -24,10 +24,21 @@
     currentName = name;
     markPresenter(name);
   }
+  // History stays shallow: the home screen is the only stop. Leaving home adds one entry, every
+  // further screen replaces it, and going home pops it again. So "back" reaches home in one press
+  // however much you tapped around. Embedded in the website's hero, the demo adds no entries at all.
+  const HOME = 'today';
+  const embedded = window.self !== window.top;
   const router = {
     go(to) {
       const target = '#/' + to;
-      if (location.hash === target) render('enter'); else location.hash = target;
+      if (location.hash === target) { render('enter'); return; }
+      const toHome = to.split('?')[0] === HOME;
+      const deep = history.state && history.state.gcDeep;
+      if (toHome && deep && !embedded) { history.back(); return; }   // hashchange renders
+      if (currentName === HOME && !toHome && !embedded) history.pushState({ gcDeep: true }, '', target);
+      else history.replaceState(history.state, '', target);
+      render('enter');
     },
     refresh() { const st = view.querySelector('.pad'); const y = st ? st.scrollTop : 0; render(); const n = view.querySelector('.pad'); if (n) n.scrollTop = y; }
   };
