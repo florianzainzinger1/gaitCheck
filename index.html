@@ -152,33 +152,27 @@
           <video id="techVideo" muted loop playsinline preload="none" poster="site/video/tracking.jpg" width="848" height="384" aria-label="Trot clip with tracking points on the horse's head, body and legs">
             <source src="site/video/tracking.mp4" type="video/mp4">
           </video>
-          <div class="hud" aria-hidden="true"><i></i><span id="hudT">t 0.00 s</span><span id="hudF">frame 0000</span></div>
           <button class="tech-toggle" id="techToggle" type="button" aria-label="Pause the clip">Pause</button>
         </div>
         <div class="readout" aria-hidden="true">
-          <div class="scope">
-            <canvas id="scope" height="120"></canvas>
-            <div class="scope-leg"><span><i class="k1"></i>head, vertical</span><span><i class="k2"></i>pelvis, vertical</span><span class="mm">mm</span></div>
+          <div class="r-main">
+            <span class="r-label">Symmetry</span>
+            <b class="r-big" id="rSI">96.1</b>
+            <span class="r-status" id="rStatus">Within usual range</span>
           </div>
-          <div class="phase">
-            <span>stride <b id="rStride">1</b></span>
-            <div class="phase-bar"><i id="rPhase"></i></div>
-            <span id="rStance">LF + RH</span>
-          </div>
-          <dl class="metrics">
-            <div><dt>Head MinDiff</dt><dd><b id="rHead">0.0</b> mm</dd></div>
-            <div><dt>Pelvis MinDiff</dt><dd><b id="rPelvis">0.0</b> mm</dd></div>
-            <div><dt>Symmetry, this stride</dt><dd><b id="rSI">0.0</b></dd></div>
-            <div><dt>Smoothed, α = 0.30</dt><dd><b id="rEMA">0.0</b></dd></div>
-            <div><dt>z vs. baseline</dt><dd><b id="rZ">0.00</b> σ</dd></div>
-            <div><dt>Status</dt><dd><b id="rStatus" class="ok">in range</b></dd></div>
+          <svg class="r-chart" id="rChart" viewBox="0 0 320 110" role="img">
+            <rect class="r-band" x="0" y="34" width="320" height="42" rx="8"/>
+            <polyline class="r-line" id="rLine" points=""/>
+            <g id="rPts"></g>
+          </svg>
+          <dl class="r-side">
+            <div><dt>Head, left vs. right</dt><dd><b id="rHead">–</b> mm</dd></div>
+            <div><dt>Pelvis, left vs. right</dt><dd><b id="rPelvis">–</b> mm</dd></div>
+            <div><dt>Strides measured</dt><dd><b id="rStride">0</b></dd></div>
           </dl>
-          <pre class="formula">SI = 100 · (1 − |L − R| / (L + R))
-Sₙ = α · SIₙ + (1 − α) · Sₙ₋₁
-z  = (Sₙ − μ) / σ     μ = 96.0  σ = 1.1</pre>
         </div>
       </div>
-      <p class="small tech-note">The clip shows tracking points on a ridden trot. The numbers next to it are simulated to illustrate the calculation.</p>
+      <p class="small tech-note">Each point is the average of four strides. The band is the horse's usual range. The values here are simulated to illustrate the calculation.</p>
     </div>
   </section>
 

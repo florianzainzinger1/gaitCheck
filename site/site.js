@@ -28,74 +28,55 @@
     els.forEach(el => el.classList.add('in'));
   }
 
-  // Under the hood: the tracking clip plays while it is on screen, and a readout runs in step with it.
-  // The values are simulated from the clip time (no real measurement), so they are stable and loop cleanly.
+  // Under the hood: the tracking clip plays while it is on screen. The readout next to it stays calm:
+  // it updates once every four strides and adds one point to the chart. The values are simulated from
+  // the clip time (no real measurement), so they are stable and loop cleanly.
   const video = document.getElementById('techVideo');
-  const scope = document.getElementById('scope');
-  if (video && scope) {
+  const readout = document.querySelector('.readout');
+  if (video && readout) {
     const $ = id => document.getElementById(id);
-    const T = 0.72, FPS = 30, ALPHA = 0.30, MU = 96.0, SIGMA = 1.1, AH = 22, AP = 30, WINDOW = 3;
+    const STRIDE = 0.72, PER = 4, SLOTS = 8, LO = 94.5, HI = 97.5;
     const rnd = (n, k) => { const x = Math.sin(n * 127.1 + k * 311.7) * 43758.5453; return x - Math.floor(x); };
-    const asymH = n => 0.5 + 1.6 * rnd(n, 1);                 // mm, half the difference between the two minima
-    const asymP = n => 0.5 + 1.4 * rnd(n, 2);
-    const wob = (t, k) => 0.9 * Math.sin(t * 23.1 + k) + 0.6 * Math.sin(t * 41.7 + k * 2.3);
-    const head = t => { const n = Math.floor(t / T), p = 2 * Math.PI * t / T; return AH * Math.cos(2 * p) + asymH(n) * Math.cos(p) + wob(t, 1); };
-    const pelvis = t => { const n = Math.floor(t / T), p = 2 * Math.PI * t / T + 0.6; return AP * Math.cos(2 * p) + asymP(n) * Math.cos(p) + wob(t, 4); };
-    const si = n => 100 * (1 - asymP(n) / AP);          // L = AP + a, R = AP - a  =>  |L - R| / (L + R) = a / AP
-    const minus = (v, d) => (v < 0 ? '−' : '') + Math.abs(v).toFixed(d);
-    const ctx = scope.getContext('2d');
-    const css = getComputedStyle(document.documentElement);
-    const ink = css.getPropertyValue('--ink').trim(), green = css.getPropertyValue('--green').trim(), line = css.getPropertyValue('--line').trim();
-    let W = 0, H = 0;
-    function size() {
-      const r = scope.getBoundingClientRect(), d = Math.min(2, window.devicePixelRatio || 1);
-      W = r.width; H = r.height; scope.width = Math.round(W * d); scope.height = Math.round(H * d); ctx.setTransform(d, 0, 0, d, 0, 0);
+    const avg = (w, f) => { let s = 0; for (let i = 0; i < PER; i++) s += f(w * PER + i); return s / PER; };
+    const headOf = w => avg(w, n => 1.0 + 3.2 * rnd(n, 1));           // mm, difference between the two halves of a stride
+    const pelvisOf = w => avg(w, n => 1.0 + 2.8 * rnd(n, 2));
+    const siOf = w => 100 - 1.6 * pelvisOf(w);                       // symmetry score of the window
+    const X = i => 16 + i * (288 / (SLOTS - 1));
+    const Y = v => 34 + (HI - v) / (HI - LO) * 42;                    // band spans y 34..76 in the chart
+    let shown = -2;
+    function render(done) {                                           // done = number of finished windows
+      if (done === shown) return;
+      const first = shown === -2; shown = done;
+      const paint = () => {
+        const w = done - 1;
+        $('rStride').textContent = done * PER;
+        $('rSI').textContent = done ? siOf(w).toFixed(1) : '–';
+        $('rHead').textContent = done ? headOf(w).toFixed(1) : '–';
+        $('rPelvis').textContent = done ? pelvisOf(w).toFixed(1) : '–';
+        $('rStatus').textContent = !done ? 'Reading the first strides' : (siOf(w) >= LO ? 'Within usual range' : 'Below usual range');
+        const pts = []; for (let i = 0; i < Math.min(done, SLOTS); i++) pts.push([X(i), Y(siOf(i))]);
+        $('rLine').setAttribute('points', pts.map(p => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' '));
+        $('rPts').innerHTML = pts.map((p, i) => '<circle cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="5"' + (i === pts.length - 1 ? ' class="now"' : '') + '/>').join('');
+        readout.classList.remove('tick');
+      };
+      if (first || calm) { paint(); return; }
+      readout.classList.add('tick'); setTimeout(paint, 350);          // soft fade between updates
     }
-    function trace(fn, t, color) {
-      ctx.beginPath();
-      for (let x = 0; x <= W; x += 2) {
-        const y = H / 2 - fn(t - (W - x) / W * WINDOW) * (H / 2 - 8) / 34;
-        if (x) ctx.lineTo(x, y); else ctx.moveTo(x, y);
-      }
-      ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.lineJoin = 'round'; ctx.stroke();
-    }
-    function draw() {
-      const t = video.currentTime || 0;
-      const n = Math.floor(t / T), ph = t / T - n;
-      ctx.clearRect(0, 0, W, H);
-      ctx.strokeStyle = line; ctx.lineWidth = 1;
-      [0.5, H / 2, H - 0.5].forEach(y => { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); });
-      // stride boundaries scroll with the signal
-      for (let k = n; k >= 0 && k * T > t - WINDOW; k--) { const x = W - (t - k * T) / WINDOW * W; ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
-      trace(pelvis, t, green); trace(head, t, ink);
-      let s = MU; for (let k = 0; k <= n; k++) s = ALPHA * si(k) + (1 - ALPHA) * s;
-      const z = (s - MU) / SIGMA;
-      $('hudT').textContent = 't ' + t.toFixed(2) + ' s';
-      $('hudF').textContent = 'frame ' + String(Math.floor(t * FPS)).padStart(4, '0');
-      $('rStride').textContent = n + 1;
-      $('rPhase').style.width = (ph * 100).toFixed(1) + '%';
-      $('rStance').textContent = ph < 0.5 ? 'LF + RH' : 'RF + LH';
-      $('rHead').textContent = minus((rnd(n, 3) < 0.5 ? -2 : 2) * asymH(n), 1);
-      $('rPelvis').textContent = minus((rnd(n, 4) < 0.5 ? -2 : 2) * asymP(n), 1);
-      $('rSI').textContent = si(n).toFixed(1);
-      $('rEMA').textContent = s.toFixed(1);
-      $('rZ').textContent = minus(z, 2);
-      $('rStatus').textContent = Math.abs(z) < 2 ? 'in range' : 'check again';
-    }
-    let raf = 0, userPaused = calm, visible = false;
-    const loop = () => { draw(); raf = video.paused ? 0 : requestAnimationFrame(loop); };
+    // The first value is there from the start, so the card never shows an empty state.
+    const update = () => render(Math.min(SLOTS, Math.floor((video.currentTime || 0) / (STRIDE * PER)) + 1));
+    let userPaused = calm, visible = false;
     const toggle = $('techToggle');
     const label = () => { toggle.textContent = video.paused ? 'Play' : 'Pause'; toggle.setAttribute('aria-label', (video.paused ? 'Play' : 'Pause') + ' the clip'); };
     const sync = () => { if (visible && !userPaused) { const p = video.play(); if (p && p.catch) p.catch(() => { }); } else video.pause(); };
-    video.addEventListener('play', () => { label(); if (!raf) raf = requestAnimationFrame(loop); });
-    video.addEventListener('pause', () => { label(); draw(); });
-    video.addEventListener('seeked', draw);
+    video.addEventListener('timeupdate', update);
+    video.addEventListener('seeked', update);
+    video.addEventListener('play', label);
+    video.addEventListener('pause', label);
     toggle.addEventListener('click', () => { userPaused = !video.paused; sync(); });
-    window.addEventListener('resize', () => { size(); draw(); });
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(es => { visible = es[0].isIntersecting; sync(); }, { threshold: 0.25 }).observe(video);
     } else { visible = true; sync(); }
-    size(); draw(); label();
+    update(); label();
   }
 
   // The live demo only runs inside the desktop hero. On phones the hero shows a still that opens the demo full screen.
