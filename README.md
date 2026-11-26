@@ -48,7 +48,7 @@ The demo app is a working version of the mockup. It keeps real state and remembe
 **What you can do in it**
 
 - **Today**: the current horse's symmetry score, an alert when a leg is out of range, and a "ready to train" card. Switch between horses here.
-- **Record**: shows demo footage of Blume with animated tracking points. You can also film live with the phone camera or pick a video from the phone. The 30-second timer and the step-by-step "analysing" screen run as on a phone.
+- **Record**: shows demo footage of Blume with animated tracking points. The demo always uses this footage: it never opens the camera and takes no uploads. The 30-second timer and the step-by-step "analysing" screen run as on a phone.
 - **Result**: symmetry for each leg compared with the horse's own range, plus an interactive chart (drag across it to read each check).
 - **Change detected**: an in-app push notification, the flagged leg's chart and what the change means.
 - **Send to vet → vet report**: choose what to include and add a note. The app then creates a link to a report for the vet with charts per leg, a table of all checks, and the training log. The report can be printed or saved as a PDF.
@@ -71,11 +71,11 @@ The demo app is a working version of the mockup. It keeps real state and remembe
 python -m http.server 5173 --directory app
 ```
 
-Then open http://localhost:5173. Opening `app/index.html` directly from disk also works, but camera, offline mode and "install" need http(s) or localhost.
+Then open http://localhost:5173. Opening `app/index.html` directly from disk also works, but offline mode and "install" need http(s) or localhost.
 
 On GitHub Pages (or any static host) the app can be installed on a phone ("Add to Home Screen") and keeps working **offline** once it has been opened, so the demo doesn't depend on Wi-Fi at the venue. After changing files, bump `VERSION` in `app/sw.js`.
 
-> The gait analysis in the demo is **simulated**. Values are generated around each horse's own range, or as a hind-left drop when the presenter picks it. The live camera and video upload are real, but no pose model runs on them yet.
+> The gait analysis in the demo is **simulated**. Values are generated around each horse's own range, or as a hind-left drop when the presenter picks it.
 
 **Code layout**: `js/data.js` holds the data model, demo seed, baseline and flagging rules, and the simulated analysis. `js/screens.js` has all the screens, `js/charts.js` the SVG charts, and `js/app.js` the router, phone frame and presenter scenes. There is no build step and no dependencies apart from Google Fonts.
 

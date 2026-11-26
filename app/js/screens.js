@@ -104,14 +104,12 @@
       return `<section class="scr record">
         <div class="vf" id="vf">
           <img class="vf-media" id="vfImg" src="assets/trot.jpg" alt="Demo footage: Blume trotting away on a dirt path">
-          <video class="vf-media" id="vfVid" playsinline muted hidden></video>
           ${kpOverlay('live')}
-          <div class="vf-guide" id="vfGuide" hidden><span></span></div>
         </div>
         <div class="rec-top">
           <button class="round" data-go="today" aria-label="Close">${I.close({ stroke: '#FFF' })}</button>
           <span class="chip">Trot · in hand</span>
-          <button class="round" data-act="use-camera" aria-label="Use camera" title="Use the camera">${I.camera({ stroke: '#FFF' })}</button>
+          <span class="round ghost" aria-hidden="true"></span>
         </div>
         <div class="howto" id="howto">
           <b>Trot ${esc(h.name)} away from you and back</b>
@@ -123,46 +121,19 @@
         <div class="rec-bar">
           <div class="prog"><span id="prog"></span></div>
           <div class="rec-ctrl">
-            <label class="thumb" title="Use a video from your phone">
-              <img src="${h.photo || 'assets/trot.jpg'}" alt="">
-              <input type="file" accept="video/*" id="pickVideo" hidden>
-              <span class="thumb-ic">${I.upload({ s: 16, stroke: '#FFF' })}</span>
-            </label>
+            <span class="thumb"><img src="${h.photo || 'assets/trot.jpg'}" alt=""></span>
             <button class="shutter" id="shutter" aria-label="Start recording"><span></span></button>
             <span class="timer" id="timer">0:00</span>
           </div>
-          <div class="src" id="srcLbl">Demo footage · tap the camera to film live</div>
+          <div class="src">Demo footage</div>
         </div>
       </section>`;
     },
     mount(el) {
       const h = GC.active();
-      rec = { source: 'demo', stream: null, t: 0, timer: null, running: false, horseId: h.id };
-      const vid = el.querySelector('#vfVid'), img = el.querySelector('#vfImg');
+      // The demo always runs on the built-in footage. It never opens the camera and takes no files.
+      rec = { t: 0, timer: null, running: false, horseId: h.id };
       const shutter = el.querySelector('#shutter');
-      const setSource = (src, label) => {
-        rec.source = src;
-        el.querySelector('#srcLbl').textContent = label;
-        el.querySelector('.kp').style.display = src === 'demo' ? '' : 'none';
-        el.querySelector('#vfGuide').hidden = src === 'demo';
-        img.hidden = src !== 'demo'; vid.hidden = src === 'demo';
-      };
-
-      el.querySelector('[data-act="use-camera"]').onclick = async () => {
-        if (rec.stream) { stopStream(); setSource('demo', 'Demo footage · tap the camera to film live'); return; }
-        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { GC.ui.snack('Camera needs https or localhost'); return; }
-        try {
-          rec.stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' } }, audio: false });
-          vid.srcObject = rec.stream; vid.play();
-          setSource('camera', 'Live camera · tap the camera again for demo footage');
-        } catch (e) { GC.ui.snack('No camera access – using demo footage'); }
-      };
-      el.querySelector('#pickVideo').onchange = e => {
-        const f = e.target.files && e.target.files[0]; if (!f) return;
-        stopStream();
-        vid.srcObject = null; vid.src = URL.createObjectURL(f); vid.loop = true; vid.play();
-        setSource('video', 'Your video · ' + f.name);
-      };
       shutter.onclick = () => rec.running ? finish() : start();
 
       function start() {
@@ -184,23 +155,11 @@
       }
       function finish() {
         clearInterval(rec.timer); rec.running = false;
-        GC.session = { horseId: h.id, source: rec.source, seconds: Math.max(5, Math.round(Math.min(30, rec.t))), frame: grab() };
-        stopStream();
+        GC.session = { horseId: h.id, source: 'demo', seconds: Math.max(5, Math.round(Math.min(30, rec.t))), frame: 'assets/trot.jpg' };
         GC.router.go('analysing');
       }
-      function grab() {
-        if (rec.source === 'demo') return 'assets/trot.jpg';
-        try {
-          const c = document.createElement('canvas');
-          c.width = vid.videoWidth || 640; c.height = vid.videoHeight || 480;
-          c.getContext('2d').drawImage(vid, 0, 0, c.width, c.height);
-          return c.toDataURL('image/jpeg', 0.8);
-        } catch (e) { return 'assets/trot.jpg'; }
-      }
-      function stopStream() { if (rec && rec.stream) { rec.stream.getTracks().forEach(t => t.stop()); rec.stream = null; } }
-      rec.stopStream = stopStream;
     },
-    unmount() { if (rec) { clearInterval(rec.timer); rec.stopStream && rec.stopStream(); } rec = null; }
+    unmount() { if (rec) clearInterval(rec.timer); rec = null; }
   };
 
   // ---------- ANALYSING ----------
@@ -216,8 +175,8 @@
         <div class="muted sm b">Today · 0:${String(ses.seconds).padStart(2, '0')} of trot</div>
         <h2 class="t">Looking at ${esc(h.name)}'s movement</h2>
         <div class="an-frame">
-          <img src="${ses.frame}" alt="Captured frame">
-          ${ses.source === 'demo' ? kpOverlay('an') : `<div class="scanonly"></div>`}
+          <img src="assets/trot.jpg" alt="Frame from the demo footage">
+          ${kpOverlay('an')}
           <span class="an-badge" id="anBadge">Analysing…</span>
         </div>
         <div class="card list steps">${steps.map((s, i) => `<div class="li step" data-i="${i}"><span class="stp"><span class="spin"></span>${I.check({ stroke: '#FFF', s: 16, w: 2.5 })}</span>${esc(s)}</div>`).join('')}</div>

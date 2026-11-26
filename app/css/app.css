@@ -198,8 +198,6 @@ body.mobile .today .sheet-card { bottom: calc(64px + var(--safe-b)); }
 @keyframes kp { 0%, 100% { opacity: .2; r: 9; } 50% { opacity: 1; r: 15; } }
 @keyframes dash { to { stroke-dashoffset: -36; } }
 @keyframes scan { 0% { transform: translateY(440px); opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { transform: translateY(780px); opacity: 0; } }
-.vf-guide { position: absolute; inset: 22% 20% 12%; border: 2px dashed rgba(255, 255, 255, .6); border-radius: 22px; }
-.vf-guide span::after { content: "Fit all four hooves in here"; position: absolute; bottom: -30px; left: 0; right: 0; text-align: center; font-size: 13px; color: rgba(255, 255, 255, .85); }
 .rec-top { position: absolute; top: calc(52px + var(--safe-t)); left: 16px; right: 16px; display: flex; justify-content: space-between; align-items: center; z-index: 2; }
 body.mobile .rec-top { top: calc(16px + var(--safe-t)); }
 .chip { background: rgba(30, 30, 30, .6); backdrop-filter: blur(6px); padding: 10px 16px; border-radius: 20px; font-weight: 600; font-size: 15px; }
@@ -217,9 +215,9 @@ body.mobile .rec-live { top: calc(76px + var(--safe-t)); }
 .prog { height: 4px; border-radius: 2px; background: #444; overflow: hidden; }
 .prog span { display: block; height: 100%; width: 0; background: #E5484D; transition: width .1s linear; }
 .rec-ctrl { display: flex; align-items: center; justify-content: space-between; margin-top: 18px; }
-.thumb { width: 52px; height: 52px; border-radius: 10px; overflow: hidden; border: 2px solid #FFF; cursor: pointer; position: relative; }
+.thumb { width: 52px; height: 52px; border-radius: 10px; overflow: hidden; border: 2px solid #FFF; position: relative; }
+.round.ghost { visibility: hidden; }
 .thumb img { width: 100%; height: 100%; object-fit: cover; }
-.thumb-ic { position: absolute; inset: 0; background: rgba(0, 0, 0, .35); display: flex; align-items: center; justify-content: center; }
 .shutter { width: 78px; height: 78px; border-radius: 50%; border: 4px solid #FFF; background: none; padding: 5px; cursor: pointer; }
 .shutter span { display: block; width: 100%; height: 100%; border-radius: 50%; background: #E5484D; transition: all .25s; }
 .shutter.on span { border-radius: 10px; transform: scale(.5); }
