@@ -1,9 +1,9 @@
 /* GaitCheck – offline cache so the demo works without venue Wi-Fi. Bump VERSION after changes. */
-const VERSION = 'gc-v5';
+const VERSION = 'gc-v6';
 const SHELL = [
   './', 'index.html', 'manifest.webmanifest', 'css/app.css',
   'js/data.js', 'js/ui.js', 'js/charts.js', 'js/screens.js', 'js/app.js',
-  'assets/rider.jpg', 'assets/blume.jpg', 'assets/trot.jpg', 'assets/icon.svg', 'assets/icon-192.png', 'assets/icon-512.png'
+  'assets/rider.jpg', 'assets/blume.jpg', 'assets/trot.jpg', 'assets/clip-1.jpg', 'assets/clip-2.jpg', 'assets/clip-3.jpg', 'assets/clip-4.jpg', 'assets/tracking.jpg', 'assets/icon.svg', 'assets/icon-192.png', 'assets/icon-512.png'
 ];
 self.addEventListener('install', e => e.waitUntil(caches.open(VERSION).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())));
 self.addEventListener('activate', e => e.waitUntil(
@@ -12,6 +12,7 @@ self.addEventListener('activate', e => e.waitUntil(
 // network first (always fresh when online), cache as fallback; fonts are cached as they load
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
+  if (e.request.headers.has('range')) return; // video is streamed in parts, which the cache cannot store
   e.respondWith(
     fetch(e.request).then(res => {
       const copy = res.clone();

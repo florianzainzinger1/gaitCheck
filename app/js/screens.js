@@ -87,14 +87,11 @@
   };
 
   // ---------- RECORD ----------
-  // keypoints that line up with the tracking overlay in assets/trot.jpg (700×933)
-  const KP = [[327, 486], [304, 500], [272, 516], [358, 518], [296, 648], [338, 630], [299, 708], [334, 673], [298, 737], [333, 687]];
-  function kpOverlay(cls = '') {
-    return `<svg class="kp ${cls}" viewBox="0 0 700 933" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <rect class="bbox" x="252" y="470" width="125" height="290" rx="10"/>
-      ${KP.map(([x, y], i) => `<circle class="kpt" style="--i:${i}" cx="${x}" cy="${y}" r="9"/>`).join('')}
-      <line class="scan" x1="0" x2="700" y1="0" y2="0"/></svg>`;
-  }
+  // The demo footage is a landscape clip (848×384) with the tracking points already drawn in.
+  // It is shown whole, with black bars above and below, and plays while the recording runs.
+  const CLIP = 'assets/tracking.mp4', CLIP_STILL = 'assets/tracking.jpg';
+  const clipVideo = id => `<video class="clip" id="${id}" src="${CLIP}" poster="${CLIP_STILL}" muted loop playsinline preload="metadata" aria-label="Demo footage: a horse trotting past the camera with tracking points on head, body and legs"></video>`;
+  const playClip = v => { if (!v) return; const p = v.play(); if (p && p.catch) p.catch(() => { }); };
 
   let rec = null; // live recording session
   S.record = {
@@ -103,8 +100,7 @@
       const h = GC.active();
       return `<section class="scr record">
         <div class="vf" id="vf">
-          <img class="vf-media" id="vfImg" src="assets/trot.jpg" alt="Demo footage: Blume trotting away on a dirt path">
-          ${kpOverlay('live')}
+          ${clipVideo('vfVid')}
         </div>
         <div class="rec-top">
           <button class="round" data-go="today" aria-label="Close">${I.close({ stroke: '#FFF' })}</button>
@@ -142,6 +138,9 @@
         el.querySelector('#howto').classList.add('away');
         el.querySelector('#recLive').hidden = false;
         el.classList.add('is-rec');
+        const vid = el.querySelector('#vfVid');
+        try { vid.currentTime = 0; } catch (e) { }
+        playClip(vid);
         const speed = GC.state.fastRecord ? 6 : 1;
         const msgs = ['Tracking ' + h.name, 'Hooves in frame', 'Keep the phone still', 'Now trot back towards you', 'Almost done'];
         rec.timer = setInterval(() => {
@@ -175,8 +174,8 @@
         <div class="muted sm b">Today · 0:${String(ses.seconds).padStart(2, '0')} of trot</div>
         <h2 class="t">Looking at ${esc(h.name)}'s movement</h2>
         <div class="an-frame">
-          <img src="assets/trot.jpg" alt="Frame from the demo footage">
-          ${kpOverlay('an')}
+          ${clipVideo('anVid')}
+          <div class="scanonly" id="anScan"></div>
           <span class="an-badge" id="anBadge">Analysing…</span>
         </div>
         <div class="card list steps">${steps.map((s, i) => `<div class="li step" data-i="${i}"><span class="stp"><span class="spin"></span>${I.check({ stroke: '#FFF', s: 16, w: 2.5 })}</span>${esc(s)}</div>`).join('')}</div>
@@ -189,6 +188,7 @@
       const stepEls = el.querySelectorAll('.step');
       const dt = GC.state.fastRecord ? 650 : 1300;
       stepEls[0].classList.add('doing');
+      playClip(el.querySelector('#anVid'));
       stepEls.forEach((s, i) => {
         anTimers.push(setTimeout(() => {
           s.classList.remove('doing'); s.classList.add('done');
@@ -203,6 +203,8 @@
         const ev = GC.evaluate(h, c);
         el.querySelector('#anBadge').textContent = 'Done';
         el.querySelector('#anBadge').classList.add('done');
+        el.querySelector('#anScan').hidden = true;
+        el.querySelector('#anVid').pause();
         const btn = el.querySelector('#seeRes');
         btn.disabled = false;
         GC.state.activeId = h.id; GC.commit();
@@ -413,7 +415,7 @@
           ${r && r.note ? `<div class="rp-note"><span class="muted sm">Note from the owner</span><p>${esc(r.note)}</p></div>` : ''}
           ${inc.data && b ? `<h4>Symmetry per leg</h4><div class="rp-grid">${legCharts}</div>
           <h4>All checks</h4><table class="rp-tbl"><thead><tr><th>Date</th><th>FL</th><th>FR</th><th>HL</th><th>HR</th><th>All</th></tr></thead><tbody>${rows}</tbody></table>` : ''}
-          ${inc.videos ? `<h4>Trot videos</h4><div class="rp-vids">${all.slice(-4).reverse().map(c => `<div class="rp-vid"><img src="assets/trot.jpg" alt=""><span>${ch.fmtDate(c.at)}</span></div>`).join('')}</div>` : ''}
+          ${inc.videos ? `<h4>Trot videos</h4><div class="rp-vids">${all.slice(-4).reverse().map((c, i) => `<div class="rp-vid"><img src="assets/clip-${i + 1}.jpg" width="636" height="288" alt="Frame from the trot video"><span>${ch.fmtDate(c.at)}</span></div>`).join('')}</div>` : ''}
           ${sessions ? `<h4>Training log</h4><ul class="rp-ul">${sessions}</ul>` : ''}
           <p class="rp-disc">Symmetry scores are relative to this horse's own baseline (learned from ${p.pos} first ${GC.BASELINE_CHECKS} checks), measured from 30-second in-hand trot videos filmed by the owner. GaitCheck flags changes. It does not diagnose.</p>
         </div>

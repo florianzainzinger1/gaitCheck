@@ -4,7 +4,7 @@
 
 GaitCheck is an app for horse owners that uses AI to detect lameness early, before the human eye can see it. You film your horse trotting for 30 seconds once a week. The app learns that horse's own movement baseline and alerts you when something changes.
 
-The project started in the startVienna Sprint and is currently at the prototype and pitch stage, working towards Demo Day.
+The project started in the START Vienna Sprint and is currently at the prototype and pitch stage, working towards Demo Day.
 
 ## The problem
 
@@ -48,7 +48,7 @@ The demo app is a working version of the mockup. It keeps real state and remembe
 **What you can do in it**
 
 - **Today**: the current horse's symmetry score, an alert when a leg is out of range, and a "ready to train" card. Switch between horses here.
-- **Record**: shows demo footage of Blume with animated tracking points. The demo always uses this footage: it never opens the camera and takes no uploads. The 30-second timer and the step-by-step "analysing" screen run as on a phone.
+- **Record**: shows a landscape demo clip with tracking points, which plays while the recording runs. The demo always uses this footage: it never opens the camera and takes no uploads. The 30-second timer and the step-by-step "analysing" screen run as on a phone.
 - **Result**: symmetry for each leg compared with the horse's own range, plus an interactive chart (drag across it to read each check).
 - **Change detected**: an in-app push notification, the flagged leg's chart and what the change means.
 - **Send to vet → vet report**: choose what to include and add a note. The app then creates a link to a report for the vet with charts per leg, a table of all checks, and the training log. The report can be printed or saved as a PDF.
